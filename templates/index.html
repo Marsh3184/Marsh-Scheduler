@@ -1,0 +1,37 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Marsh Scheduler</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <img src="{{ url_for('static', filename='logo_marsh.png') }}" class="logo" alt="Marsh Logo">
+        <h1>Schedule a Task</h1>
+        <form method="POST" action="/add">
+            <input type="text" name="task" placeholder="Enter task" required>
+            <input type="date" name="date" required>
+            <input type="time" name="time" required>
+            <button type="submit">Add Task</button>
+        </form>
+        <a href="/journal" class="journal-btn">Open Journal</a>
+        <h2>Upcoming Tasks</h2>
+        <ul>
+            {% for task in tasks %}
+                <li>{{ task.date }} at {{ task.time }} - {{ task.task }}</li>
+            {% endfor %}
+        </ul>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+    </div>
+</body>
+</html>
