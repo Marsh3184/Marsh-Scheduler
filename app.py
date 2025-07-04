@@ -25,7 +25,7 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        if username == 'chris' and password == 'Newme2019':  # <-- customize this
+        if username == 'chris' and password == 'yourpassword':  # <-- customize this
             session['logged_in'] = True
             flash("Logged in successfully.")
             return redirect(url_for('index'))
@@ -45,10 +45,6 @@ def index():
     tasks = Task.query.order_by(Task.date, Task.time).all()
     return render_template('index.html', tasks=tasks)
 
-@app.route('/journal', methods=['GET', 'POST'])
-@login_required
-def journal():
-    ...
 
 # --- Models ---
 class Task(db.Model):
@@ -75,6 +71,7 @@ def add():
     return redirect(url_for('index'))
 
 @app.route('/journal', methods=['GET', 'POST'])
+@login_required
 def journal():
     if request.method == 'POST':
         content = request.form['content']
