@@ -13,9 +13,11 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 20px 0;
+    margin-top: 20px;
+    margin-bottom: 20px;
     text-align: center;
 }
+
 
 .logo {
     display: block;
