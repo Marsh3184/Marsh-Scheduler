@@ -13,15 +13,17 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin: 20px 0;
     text-align: center;
 }
+
 .logo {
     display: block;
-    margin: 0 auto 20px;
-    width: 500px;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
 }
+
 input, textarea {
     width: 100%;
     margin: 5px 0;
