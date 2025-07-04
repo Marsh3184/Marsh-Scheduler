@@ -63,7 +63,9 @@ def edit_journal(id):
     entries = JournalEntry.query.order_by(JournalEntry.timestamp.desc()).all()
     return render_template('journal.html', entries=entries, edit_entry=entry)
 
+with app.app_context():
+    db.create_all()
+
 if __name__ == '__main__':
-    with app.app_context():
-       db.create_all()
     app.run(debug=True)
+
