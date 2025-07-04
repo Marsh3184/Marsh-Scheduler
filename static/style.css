@@ -9,6 +9,14 @@ body {
     max-width: 600px;
     margin: auto;
 }
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
 .logo {
     display: block;
     margin: 0 auto 20px;
