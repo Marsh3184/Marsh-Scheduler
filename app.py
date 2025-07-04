@@ -25,7 +25,7 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        if username == 'chris' and password == 'yourpassword':  # <-- customize this
+        if username == 'chris' and password == 'Newme2019':  # <-- customize this
             session['logged_in'] = True
             flash("Logged in successfully.")
             return redirect(url_for('index'))
@@ -62,11 +62,6 @@ class JournalEntry(db.Model):
     content = db.Column(db.Text, nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
-# --- Routes ---
-@app.route('/')
-def index():
-    tasks = Task.query.order_by(Task.date, Task.time).all()
-    return render_template('index.html', tasks=tasks)
 
 @app.route('/add', methods=['POST'])
 def add():
@@ -109,4 +104,3 @@ with app.app_context():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
