@@ -25,7 +25,7 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-         if username == 'Chris' and password == 'Newme2019':  # <-- customize this
+        if username == 'Chris' and password == 'Newme2019':  # <-- customize this
             session['logged_in'] = True
             flash("Logged in successfully.")
             return redirect(url_for('index'))
