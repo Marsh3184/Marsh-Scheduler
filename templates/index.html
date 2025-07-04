@@ -14,7 +14,10 @@
 </head>
 <body>
     <div class="container">
-        <img src="{{ url_for('static', filename='logo_marsh.png') }}" class="logo" alt="Marsh Logo">
+        <div class="logo-container">
+            <img src="{{ url_for('static', filename='logo_marsh.png') }}" class="logo" alt="Marsh Logo">
+        </div>
+
         <h1>Schedule a Task</h1>
         <form method="POST" action="/add">
             <input type="text" name="task" placeholder="Enter task" required>
