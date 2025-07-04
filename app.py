@@ -3,11 +3,52 @@ import os
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from functools import wraps
+from flask import session
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'logged_in' not in session:
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
 
 app = Flask(__name__)
 app.secret_key = 'fmub osfs jyxw onrf'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tasks.db'
 db = SQLAlchemy(app)
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if username == 'chris' and password == 'yourpassword':  # <-- customize this
+            session['logged_in'] = True
+            flash("Logged in successfully.")
+            return redirect(url_for('index'))
+        else:
+            flash("Invalid credentials.")
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    flash("Logged out.")
+    return redirect(url_for('login'))
+
+@app.route('/')
+@login_required
+def index():
+    tasks = Task.query.order_by(Task.date, Task.time).all()
+    return render_template('index.html', tasks=tasks)
+
+@app.route('/journal', methods=['GET', 'POST'])
+@login_required
+def journal():
+    ...
 
 # --- Models ---
 class Task(db.Model):
