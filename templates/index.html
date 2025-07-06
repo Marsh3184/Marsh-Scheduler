@@ -31,18 +31,19 @@
 
         <ul style="padding-left: 0; list-style-type: none;">
             {% for task in tasks %}
-                <li style="margin-top: 15px; display: flex; justify-content: space-between; align-items: center;">
-                    <div style="flex-grow: 1;">
-                        <span style="color: #0066cc; text-decoration: underline;">
-                            {{ task.date | format_date }} at {{ task.time | format_time }}
-                        </span>
-                        - {{ task.task }}
-                    </div>
-                    <div style="margin-left: 10px;">
-                        <a href="{{ url_for('edit_task', id=task.id) }}" class="task-btn">Edit</a>
-                        <a href="{{ url_for('delete_task', id=task.id) }}" class="task-btn" onclick="return confirm('Delete this task?');">Delete</a>
-                    </div>
-                </li>
+                <li class="task-item">
+    <div class="task-info">
+        <span class="task-datetime">{{ task.date | format_date }} at {{ task.time | format_time }}</span> - {{ task.task }}
+    </div>
+    <div class="dropdown">
+        <button class="dropdown-toggle">⋮</button>
+        <div class="dropdown-menu">
+            <a href="{{ url_for('edit', id=task.id) }}">Edit</a>
+            <a href="{{ url_for('delete', id=task.id) }}" onclick="return confirm('Delete this task?');">Delete</a>
+        </div>
+    </div>
+</li>
+
             {% endfor %}
         </ul>
 
