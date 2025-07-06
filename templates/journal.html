@@ -33,12 +33,17 @@
         <hr>
 
         {% for entry in entries %}
-            <div class="entry">
-                <p><strong>{{ entry.timestamp.strftime('%B %d, %Y %I:%M %p') }}</strong></p>
-                <p>{{ entry.content }}</p>
-                <a href="{{ url_for('edit_journal', id=entry.id) }}" class="edit-link">Edit</a>
-            </div>
-        {% endfor %}
+    <div class="entry">
+        <p>{{ entry.timestamp.strftime('%B %d, %Y %I:%M %p') }}</p>
+        <p>{{ entry.content }}</p>
+
+        <div style="margin-top: 10px;">
+            <a href="{{ url_for('edit_journal', id=entry.id) }}" class="task-btn">Edit</a>
+            <a href="{{ url_for('delete_journal', id=entry.id) }}" class="task-btn" onclick="return confirm('Delete this entry?');">Delete</a>
+        </div>
+    </div>
+{% endfor %}
+
 
         <a href="/" class="back-btn">Back to Schedule</a>
         <a href="/logout" class="back-btn">Logout</a>
