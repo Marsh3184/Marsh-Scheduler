@@ -41,8 +41,8 @@
             <div class="dropdown">
                 <button class="dropdown-toggle">⋮</button>
                 <div class="dropdown-menu">
-                    <a href="{{ url_for('edit', id=task.id) }}">Edit</a>
-                    <a href="{{ url_for('delete', id=task.id) }}" onclick="return confirm('Delete this task?');">Delete</a>
+                    <a href="{{ url_for('edit_task', id=task.id) }}">Edit</a>
+                    <a href="{{ url_for('delete_task', id=task.id) }}" onclick="return confirm('Delete this task?');">Delete</a>
                 </div>
             </div>
         </li>
