@@ -1,24 +1,25 @@
-
 body {
     background-color: #2e2e2e;
     color: #f5f5f5;
     font-family: Arial, sans-serif;
-    padding: 20px;
+    padding: 10px;
+    margin: 0;
 }
+
 .container {
     max-width: 600px;
-    margin: auto;
-    padding: 0 15px;
+    margin: 0 auto;
+    padding: 10px 15px;
 }
+
 .logo-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 0;
+    margin-bottom: 10px;
     text-align: center;
 }
-
 
 .logo {
     display: block;
@@ -35,6 +36,7 @@ input, textarea {
     color: white;
     border: 1px solid #665;
 }
+
 button, .journal-btn, .back-btn {
     background-color: #0066cc;
     color: white;
@@ -45,22 +47,26 @@ button, .journal-btn, .back-btn {
     border: none;
     cursor: pointer;
 }
+
 .flash {
     margin-top: 15px;
     padding: 10px;
     background-color: #444;
     color: lightgreen;
 }
+
 .entry {
     border-top: 1px solid #555;
     margin-top: 15px;
     padding-top: 10px;
 }
+
 .edit-link {
     color: #00ccff;
     text-decoration: underline;
     font-size: 0.9em;
 }
+
 .task-btn {
     background-color: #444;
     color: #00ccff;
@@ -71,10 +77,12 @@ button, .journal-btn, .back-btn {
     border-radius: 5px;
     font-size: 0.9em;
 }
+
 .task-btn:hover {
     background-color: #0066cc;
     color: white;
 }
+
 .task-item {
     display: flex;
     justify-content: space-between;
