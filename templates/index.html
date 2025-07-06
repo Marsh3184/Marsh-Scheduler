@@ -28,11 +28,10 @@
         <a href="/journal" class="journal-btn">Open Journal</a>
         <h2>Upcoming Tasks</h2>
         <ul>
-          <!-- DEBUG: {{ task.date }} -->
-
+        
             {% for task in tasks %}
-                <li>{{ task.date | format_date }} at {{ task.time | format_time }}
- - {{ task.task }}</li>
+                <li>{{ task.date|format_date }} at {{ task.time|format_time }} - {{ task.task }}</li>
+
             {% endfor %}
         </ul>
         {% with messages = get_flashed_messages() %}
