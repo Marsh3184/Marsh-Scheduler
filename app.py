@@ -20,6 +20,23 @@ app.secret_key = 'fmub osfs jyxw onrf'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 db = SQLAlchemy(app)
 
+from datetime import datetime
+
+@app.template_filter('format_date')
+def format_date(value):
+    try:
+        return datetime.strptime(value, "%m/%d/%Y").strftime("%B %d, %Y")
+    except:
+        return value
+
+@app.template_filter('format_time')
+def format_time(value):
+    try:
+        return datetime.strptime(value, "%H:%M").strftime("%I:%M %p").lstrip("0")
+    except:
+        return value
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
