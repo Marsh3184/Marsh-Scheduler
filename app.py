@@ -25,7 +25,7 @@ from datetime import datetime
 @app.template_filter('format_date')
 def format_date(value):
     try:
-        return datetime.strptime(value, "%m/%d/%Y").strftime("%B %d, %Y")
+           return value.strftime("%B %d, %Y")  # e.g., July 5, 2025
     except:
         return value
 
