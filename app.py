@@ -92,6 +92,29 @@ def add():
     flash("Task added successfully.")
     return redirect(url_for('index'))
 
+@app.route('/edit_task/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_task(id):
+    task = Task.query.get_or_404(id)
+    if request.method == 'POST':
+        task.task = request.form['task']
+        task.date = request.form['date']
+        task.time = request.form['time']
+        db.session.commit()
+        flash('Task updated successfully.')
+        return redirect(url_for('index'))
+    return render_template('edit_task.html', task=task)
+
+@app.route('/delete_task/<int:id>')
+@login_required
+def delete_task(id):
+    task = Task.query.get_or_404(id)
+    db.session.delete(task)
+    db.session.commit()
+    flash('Task deleted successfully.')
+    return redirect(url_for('index'))
+
+
 @app.route('/journal', methods=['GET', 'POST'])
 @login_required
 def journal():
