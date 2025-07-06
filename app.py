@@ -22,17 +22,22 @@ db = SQLAlchemy(app)
 
 from datetime import datetime
 
+
 @app.template_filter('format_date')
 def format_date(value):
     try:
-           return value.strftime("%B %d, %Y")  # e.g., July 5, 2025
+        # Parse 'YYYY-MM-DD'
+        parsed_date = datetime.strptime(value, "%Y-%m-%d")
+        return parsed_date.strftime("%B %d, %Y")  # Example: July 08, 2025
     except:
-        return value
+        return value  # If it fails, just show the original
 
 @app.template_filter('format_time')
 def format_time(value):
     try:
-        return datetime.strptime(value, "%H:%M").strftime("%I:%M %p").lstrip("0")
+        # Parse 'HH:MM' 24-hour format
+        parsed_time = datetime.strptime(value, "%H:%M")
+        return parsed_time.strftime("%I:%M %p").lstrip("0")  # Example: 2:30 PM
     except:
         return value
 
