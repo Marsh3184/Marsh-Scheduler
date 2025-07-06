@@ -17,7 +17,7 @@ def login_required(f):
 
 app = Flask(__name__)
 app.secret_key = 'fmub osfs jyxw onrf'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tasks.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 db = SQLAlchemy(app)
 
 @app.route('/login', methods=['GET', 'POST'])
