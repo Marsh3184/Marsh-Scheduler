@@ -2,51 +2,55 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Journal - Marsh Scheduler</title>
+    <title>Journal</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <div class="container">
-        <div class="logo-container">
-            <img src="{{ url_for('static', filename='logo_marsh.png') }}" class="logo" alt="Marsh Logo">
-        </div>
+<div class="container">
+    <div class="logo-container">
+        <img src="{{ url_for('static', filename='logo_marsh.png') }}" class="logo" alt="Marsh Logo">
+    </div>
 
-        <h2>Journal</h2>
+    <h2>My Journal</h2>
 
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages %}
-                <div class="flash">{{ message }}</div>
-            {% endfor %}
+    <form method="POST" action="/journal">
+        {% if edit_entry %}
+            <input type="hidden" name="entry_id" value="{{ edit_entry.id }}">
+            <textarea name="content" rows="5" placeholder="Edit your entry">{{ edit_entry.content }}</textarea>
+        {% else %}
+            <textarea name="content" rows="5" placeholder="Write something..."></textarea>
         {% endif %}
-        {% endwith %}
+        <button type="submit">Save Entry</button>
+    </form>
 
-        <form method="POST" action="{{ url_for('journal') }}">
-            <textarea name="content" placeholder="Write your thoughts..." rows="6" required>{{ edit_entry.content if edit_entry else '' }}</textarea>
-            {% if edit_entry %}
-                <input type="hidden" name="entry_id" value="{{ edit_entry.id }}">
-            {% endif %}
-            <button type="submit">{{ 'Update Entry' if edit_entry else 'Save Entry' }}</button>
-        </form>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="flash">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
 
-        <hr>
-
-        {% for entry in entries %}
-    <div class="entry">
-        <p>{{ entry.timestamp.strftime('%B %d, %Y %I:%M %p') }}</p>
-        <p>{{ entry.content }}</p>
-
-        <div style="margin-top: 10px;">
-            <a href="{{ url_for('edit_journal', id=entry.id) }}" class="task-btn">Edit</a>
-            <a href="{{ url_for('delete_journal', id=entry.id) }}" class="task-btn" onclick="return confirm('Delete this entry?');">Delete</a>
+    {% for entry in entries %}
+        <div class="entry">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span class="task-datetime">{{ entry.timestamp.strftime('%B %d, %Y at %I:%M %p').lstrip("0") }}</span>
+                <div class="dropdown">
+                    <button class="dropdown-toggle">⋮</button>
+                    <div class="dropdown-menu">
+                        <a href="{{ url_for('edit_journal', id=entry.id) }}">Edit</a>
+                        <a href="{{ url_for('delete_journal', id=entry.id) }}" onclick="return confirm('Delete this entry?');">Delete</a>
+                    </div>
+                </div>
+            </div>
+            <div>{{ entry.content }}</div>
         </div>
-    </div>
-{% endfor %}
+    {% endfor %}
 
-
-        <a href="/" class="back-btn">Back to Schedule</a>
-        <a href="/logout" class="back-btn">Logout</a>
-    </div>
+    <a href="/" class="back-btn">Back to Schedule</a>
+    <a href="/logout" class="back-btn">Logout</a>
+</div>
 </body>
 </html>
+
