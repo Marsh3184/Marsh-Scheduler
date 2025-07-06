@@ -29,7 +29,8 @@
         <h2>Upcoming Tasks</h2>
         <ul>
             {% for task in tasks %}
-                <li>{{ task.date }} at {{ task.time }} - {{ task.task }}</li>
+                <li>{{ task.date | format_date }} at {{ task.time | format_time }}
+ - {{ task.task }}</li>
             {% endfor %}
         </ul>
         {% with messages = get_flashed_messages() %}
