@@ -141,6 +141,15 @@ def edit_journal(id):
     entries = JournalEntry.query.order_by(JournalEntry.timestamp.desc()).all()
     return render_template('journal.html', entries=entries, edit_entry=entry)
 
+@app.route('/delete_journal/<int:id>')
+@login_required
+def delete_journal(id):
+    entry = JournalEntry.query.get_or_404(id)
+    db.session.delete(entry)
+    db.session.commit()
+    flash("Journal entry deleted.")
+    return redirect(url_for('journal'))
+
 with app.app_context():
     db.create_all()
 
