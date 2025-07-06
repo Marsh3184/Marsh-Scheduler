@@ -2,55 +2,77 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Journal</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Journal - Marsh Scheduler</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .journal-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+        }
+        .journal-content.open {
+            max-height: 500px; /* adjust based on expected size */
+            padding-top: 8px;
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <div class="logo-container">
-        <img src="{{ url_for('static', filename='logo_marsh.png') }}" class="logo" alt="Marsh Logo">
-    </div>
+    <div class="container">
+        <div class="logo-container">
+            <img src="{{ url_for('static', filename='logo_marsh.png') }}" class="logo" alt="Marsh Logo">
+        </div>
 
-    <h2>My Journal</h2>
+        <h2>Journal</h2>
 
-    <form method="POST" action="/journal">
-        {% if edit_entry %}
-            <input type="hidden" name="entry_id" value="{{ edit_entry.id }}">
-            <textarea name="content" rows="5" placeholder="Edit your entry">{{ edit_entry.content }}</textarea>
-        {% else %}
-            <textarea name="content" rows="5" placeholder="Write something..."></textarea>
+        <form method="POST" action="/journal">
+            {% if edit_entry %}
+                <input type="hidden" name="entry_id" value="{{ edit_entry.id }}">
+                <textarea name="content" placeholder="Write your thoughts..." required>{{ edit_entry.content }}</textarea>
+                <button type="submit">Update Entry</button>
+            {% else %}
+                <textarea name="content" placeholder="Write your thoughts..." required></textarea>
+                <button type="submit">Save Entry</button>
+            {% endif %}
+        </form>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="flash">{{ message }}</div>
+            {% endfor %}
         {% endif %}
-        <button type="submit">Save Entry</button>
-    </form>
+        {% endwith %}
 
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-        {% for message in messages %}
-            <div class="flash">{{ message }}</div>
-        {% endfor %}
-    {% endif %}
-    {% endwith %}
-
-    {% for entry in entries %}
-        <div class="entry">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span class="task-datetime">{{ entry.timestamp.strftime('%B %d, %Y at %I:%M %p').lstrip("0") }}</span>
-                <div class="dropdown">
-                    <button class="dropdown-toggle">⋮</button>
-                    <div class="dropdown-menu">
-                        <a href="{{ url_for('edit_journal', id=entry.id) }}">Edit</a>
-                        <a href="{{ url_for('delete_journal', id=entry.id) }}" onclick="return confirm('Delete this entry?');">Delete</a>
+        {% for entry in entries %}
+            <div class="entry">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span class="task-datetime toggle-entry" style="cursor: pointer;" onclick="toggleEntry({{ entry.id }})">
+                        {{ entry.timestamp.strftime('%B %d, %Y at %I:%M %p').lstrip("0") }}
+                    </span>
+                    <div class="dropdown">
+                        <button class="dropdown-toggle">⋮</button>
+                        <div class="dropdown-menu">
+                            <a href="{{ url_for('edit_journal', id=entry.id) }}">Edit</a>
+                            <a href="{{ url_for('delete_journal', id=entry.id) }}" onclick="return confirm('Delete this entry?');">Delete</a>
+                        </div>
                     </div>
                 </div>
+                <div id="entry-{{ entry.id }}" class="journal-content">
+                    {{ entry.content }}
+                </div>
             </div>
-            <div>{{ entry.content }}</div>
-        </div>
-    {% endfor %}
+        {% endfor %}
 
-    <a href="/" class="back-btn">Back to Schedule</a>
-    <a href="/logout" class="back-btn">Logout</a>
-</div>
+        <a href="/" class="back-btn">Back to Schedule</a>
+        <a href="/logout" class="back-btn">Logout</a>
+    </div>
+
+    <script>
+        function toggleEntry(id) {
+            const entry = document.getElementById(`entry-${id}`);
+            entry.classList.toggle('open');
+        }
+    </script>
 </body>
 </html>
-
