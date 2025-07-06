@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Task</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Edit Task</h2>
+        <form method="POST">
+            <input type="text" name="task" value="{{ task.task }}" required>
+            <input type="date" name="date" value="{{ task.date }}" required>
+            <input type="time" name="time" value="{{ task.time }}" required>
+            <button type="submit">Update</button>
+            <a href="{{ url_for('index') }}" class="back-btn">Cancel</a>
+        </form>
+    </div>
+</body>
+</html>
