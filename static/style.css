@@ -60,3 +60,17 @@ button, .journal-btn, .back-btn {
     text-decoration: underline;
     font-size: 0.9em;
 }
+.task-btn {
+    background-color: #444;
+    color: #00ccff;
+    padding: 5px 10px;
+    margin-left: 5px;
+    text-decoration: none;
+    border: 1px solid #0066cc;
+    border-radius: 5px;
+    font-size: 0.9em;
+}
+.task-btn:hover {
+    background-color: #0066cc;
+    color: white;
+}
