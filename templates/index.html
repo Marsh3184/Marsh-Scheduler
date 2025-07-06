@@ -1,16 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Marsh Scheduler</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="manifest" href="/manifest.json">
-<link rel="apple-touch-icon" href="/static/marsh-icon.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
 <body>
     <div class="container">
@@ -18,31 +12,42 @@
             <img src="{{ url_for('static', filename='logo_marsh.png') }}" class="logo" alt="Marsh Logo">
         </div>
 
-        <h1>Schedule a Task</h1>
+        <h2>Upcoming Tasks</h2>
+
         <form method="POST" action="/add">
-            <input type="text" name="task" placeholder="Enter task" required>
+            <input type="text" name="task" placeholder="Task description" required>
             <input type="date" name="date" required>
             <input type="time" name="time" required>
             <button type="submit">Add Task</button>
         </form>
-        <a href="/journal" class="journal-btn">Open Journal</a>
-        <h2>Upcoming Tasks</h2>
-        <ul>
-        
-            {% for task in tasks %}
-                <li>{{ task.date|format_date }} at {{ task.time|format_time }} - {{ task.task }}</li>
 
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="flash">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <ul style="padding-left: 0; list-style-type: none;">
+            {% for task in tasks %}
+                <li style="margin-top: 15px; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="flex-grow: 1;">
+                        <span style="color: #0066cc; text-decoration: underline;">
+                            {{ task.date }} at {{ task.time }}
+                        </span>
+                        - {{ task.task }}
+                    </div>
+                    <div style="margin-left: 10px;">
+                        <a href="{{ url_for('edit_task', id=task.id) }}" class="task-btn">Edit</a>
+                        <a href="{{ url_for('delete_task', id=task.id) }}" class="task-btn" onclick="return confirm('Delete this task?');">Delete</a>
+                    </div>
+                </li>
             {% endfor %}
         </ul>
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <div class="flash">
-                    {% for message in messages %}
-                        <p>{{ message }}</p>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endwith %}
+
+        <a href="/journal" class="journal-btn">Go to Journal</a>
+        <a href="/logout" class="back-btn">Logout</a>
     </div>
 </body>
 </html>
