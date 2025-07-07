@@ -181,7 +181,7 @@ scheduler.add_job(func=check_tasks, trigger="interval", seconds=60)
 scheduler.start()
 
 with app.app_context():
-    db.drop_all()
+    # db.drop_all()
     db.create_all()
 
 if __name__ == '__main__':
