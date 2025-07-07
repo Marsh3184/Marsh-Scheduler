@@ -98,21 +98,21 @@ def add():
     db.session.commit()
 
   # Notify 30 seconds after creation
-def notify_30s():
-    time.sleep(30)
-    task_dt = datetime.strptime(f"{task_date} {task_time}", "%Y-%m-%d %H:%M")
-    formatted_date = task_dt.strftime("%B %d, %Y")
-    formatted_time = task_dt.strftime("%I:%M %p").lstrip("0")
-    send_pushover_alert(
+    def notify_30s():
+        time.sleep(30)
+        task_dt = datetime.strptime(f"{task_date} {task_time}", "%Y-%m-%d %H:%M")
+        formatted_date = task_dt.strftime("%B %d, %Y")
+        formatted_time = task_dt.strftime("%I:%M %p").lstrip("0")
+        send_pushover_alert(
         f"Task '{task_text}' was just scheduled for {formatted_date} at {formatted_time}.",
         "Task Created"
     )
 
-from threading import Thread
-Thread(target=notify_30s).start()
+    from threading import Thread
+    Thread(target=notify_30s).start()
 
-flash("Task added successfully.")
-return redirect(url_for('index'))
+    flash("Task added successfully.")
+    return redirect(url_for('index'))
 
 
 @app.route('/edit_task/<int:id>', methods=['GET', 'POST'])
@@ -186,8 +186,8 @@ send_pushover_alert(
     "Upcoming Task"
 )
 
-                task.notified_30min = True
-                db.session.commit()
+task.notified_30min = True
+db.session.commit()
 
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=check_tasks, trigger="interval", seconds=60)
