@@ -97,15 +97,23 @@ def add():
     db.session.add(new_task)
     db.session.commit()
 
-    # Notify 30 seconds after creation
-    def notify_30s():
-        time.sleep(30)
-        send_pushover_alert(f"Task '{task_text}' was just scheduled for {task_date} at {task_time}.", "Task Created")
-    from threading import Thread
-    Thread(target=notify_30s).start()
+  # Notify 30 seconds after creation
+def notify_30s():
+    time.sleep(30)
+    task_dt = datetime.strptime(f"{task_date} {task_time}", "%Y-%m-%d %H:%M")
+    formatted_date = task_dt.strftime("%B %d, %Y")
+    formatted_time = task_dt.strftime("%I:%M %p").lstrip("0")
+    send_pushover_alert(
+        f"Task '{task_text}' was just scheduled for {formatted_date} at {formatted_time}.",
+        "Task Created"
+    )
 
-    flash("Task added successfully.")
-    return redirect(url_for('index'))
+from threading import Thread
+Thread(target=notify_30s).start()
+
+flash("Task added successfully.")
+return redirect(url_for('index'))
+
 
 @app.route('/edit_task/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -171,8 +179,13 @@ def check_tasks():
     for task in tasks:
         if not task.notified_30min:
             task_dt = datetime.strptime(f"{task.date} {task.time}", "%Y-%m-%d %H:%M")
-            if task_dt - timedelta(minutes=30) <= now < task_dt:
-                send_pushover_alert(f"Task '{task.task}' is due in 30 minutes.", "Upcoming Task")
+formatted_date = task_dt.strftime("%B %d, %Y")   # July 07, 2025
+formatted_time = task_dt.strftime("%I:%M %p").lstrip("0")  # 2:30 PM
+send_pushover_alert(
+    f"Task '{task.task}' is due in 30 minutes on {formatted_date} at {formatted_time}.",
+    "Upcoming Task"
+)
+
                 task.notified_30min = True
                 db.session.commit()
 
