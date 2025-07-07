@@ -1,10 +1,25 @@
-# --- Flask App: Marsh Scheduler with Journal and Email ---
+# --- Flask App: Marsh Scheduler with Journal and Pushover ---
 import os
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from datetime import datetime, timedelta
 from functools import wraps
-from flask import session
+from apscheduler.schedulers.background import BackgroundScheduler
+import requests
+import time
+
+# Pushover credentials
+PUSHOVER_USER_KEY = "u54nq29vztde5znk8nb38989x9xyhq"
+PUSHOVER_APP_TOKEN = "a9vonav4pk9qnp9t6gofw4sevs38wy"
+
+def send_pushover_alert(message, title="Marsh Scheduler"):
+    data = {
+        "token": PUSHOVER_APP_TOKEN,
+        "user": PUSHOVER_USER_KEY,
+        "message": message,
+        "title": title
+    }
+    requests.post("https://api.pushover.net/1/messages.json", data=data)
 
 def login_required(f):
     @wraps(f)
@@ -14,40 +29,33 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-
 app = Flask(__name__)
 app.secret_key = 'fmub osfs jyxw onrf'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 db = SQLAlchemy(app)
 
-from datetime import datetime
-
-
 @app.template_filter('format_date')
 def format_date(value):
     try:
-        # Parse 'YYYY-MM-DD'
         parsed_date = datetime.strptime(value, "%Y-%m-%d")
-        return parsed_date.strftime("%B %d, %Y")  # Example: July 08, 2025
+        return parsed_date.strftime("%B %d, %Y")
     except:
-        return value  # If it fails, just show the original
+        return value
 
 @app.template_filter('format_time')
 def format_time(value):
     try:
-        # Parse 'HH:MM' 24-hour format
         parsed_time = datetime.strptime(value, "%H:%M")
-        return parsed_time.strftime("%I:%M %p").lstrip("0")  # Example: 2:30 PM
+        return parsed_time.strftime("%I:%M %p").lstrip("0")
     except:
         return value
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        if username == 'Chris' and password == 'Newme2019':  # <-- customize this
+        if username == 'Chris' and password == 'Newme2019':
             session['logged_in'] = True
             flash("Logged in successfully.")
             return redirect(url_for('index'))
@@ -67,19 +75,18 @@ def index():
     tasks = Task.query.order_by(Task.date, Task.time).all()
     return render_template('index.html', tasks=tasks)
 
-
 # --- Models ---
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     task = db.Column(db.String(200), nullable=False)
     date = db.Column(db.String(20), nullable=False)
     time = db.Column(db.String(10), nullable=False)
+    notified_30min = db.Column(db.Boolean, default=False)
 
 class JournalEntry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text, nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-
 
 @app.route('/add', methods=['POST'])
 def add():
@@ -89,6 +96,14 @@ def add():
     new_task = Task(task=task_text, date=task_date, time=task_time)
     db.session.add(new_task)
     db.session.commit()
+
+    # Notify 30 seconds after creation
+    def notify_30s():
+        time.sleep(30)
+        send_pushover_alert(f"Task '{task_text}' was just scheduled for {task_date} at {task_time}.", "Task Created")
+    from threading import Thread
+    Thread(target=notify_30s).start()
+
     flash("Task added successfully.")
     return redirect(url_for('index'))
 
@@ -113,7 +128,6 @@ def delete_task(id):
     db.session.commit()
     flash('Task deleted successfully.')
     return redirect(url_for('index'))
-
 
 @app.route('/journal', methods=['GET', 'POST'])
 @login_required
@@ -149,6 +163,22 @@ def delete_journal(id):
     db.session.commit()
     flash("Journal entry deleted.")
     return redirect(url_for('journal'))
+
+# Background scheduler: notify 30 minutes before
+def check_tasks():
+    now = datetime.now()
+    tasks = Task.query.all()
+    for task in tasks:
+        if not task.notified_30min:
+            task_dt = datetime.strptime(f"{task.date} {task.time}", "%Y-%m-%d %H:%M")
+            if task_dt - timedelta(minutes=30) <= now < task_dt:
+                send_pushover_alert(f"Task '{task.task}' is due in 30 minutes.", "Upcoming Task")
+                task.notified_30min = True
+                db.session.commit()
+
+scheduler = BackgroundScheduler()
+scheduler.add_job(func=check_tasks, trigger="interval", seconds=60)
+scheduler.start()
 
 with app.app_context():
     db.create_all()
