@@ -179,15 +179,16 @@ def check_tasks():
     for task in tasks:
         if not task.notified_30min:
             task_dt = datetime.strptime(f"{task.date} {task.time}", "%Y-%m-%d %H:%M")
-    formatted_date = task_dt.strftime("%B %d, %Y")   # July 07, 2025
-    formatted_time = task_dt.strftime("%I:%M %p").lstrip("0")  # 2:30 PM
-    send_pushover_alert(
-        f"Task '{task.task}' is due in 30 minutes on {formatted_date} at {formatted_time}.",
-        "Upcoming Task"
-    )
+            if task_dt - timedelta(minutes=30) <= now < task_dt:
+                formatted_date = task_dt.strftime("%B %d, %Y")
+                formatted_time = task_dt.strftime("%I:%M %p").lstrip("0")
+                send_pushover_alert(
+                    f"Task '{task.task}' is due in 30 minutes on {formatted_date} at {formatted_time}.",
+                    "Upcoming Task"
+                )
+                task.notified_30min = True
+                db.session.commit()
 
-    task.notified_30min = True
-    db.session.commit()
 
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=check_tasks, trigger="interval", seconds=60)
