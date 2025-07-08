@@ -147,6 +147,14 @@ def delete_task(id):
     flash('Task deleted successfully.')
     return redirect(url_for('index'))
 
+@app.template_filter('strftime')
+def jinja2_strftime(value, format="%B %d, %Y at %I:%M %p"):
+    try:
+        return value.strftime(format)
+    except:
+        return value
+
+
 @app.route('/journal', methods=['GET', 'POST'])
 @login_required
 def journal():
