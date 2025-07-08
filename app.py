@@ -193,6 +193,7 @@ def delete_journal(id):
 # Background scheduler: notify 30 minutes before
 def check_tasks():
     with app.app_context():
+        db.session.remove()  # Clear any stale connection
         now = datetime.now()
         tasks = Task.query.all()
         for task in tasks:
@@ -207,6 +208,7 @@ def check_tasks():
                     )
                     task.notified_30min = True
                     db.session.commit()
+
 
 
 scheduler = BackgroundScheduler()
