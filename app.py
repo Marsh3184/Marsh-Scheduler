@@ -192,20 +192,21 @@ def delete_journal(id):
 
 # Background scheduler: notify 30 minutes before
 def check_tasks():
-    now = datetime.now()
-    tasks = Task.query.all()
-    for task in tasks:
-        if not task.notified_30min:
-            task_dt = datetime.strptime(f"{task.date} {task.time}", "%Y-%m-%d %H:%M")
-            if task_dt - timedelta(minutes=30) <= now < task_dt:
-                formatted_date = task_dt.strftime("%B %d, %Y")
-                formatted_time = task_dt.strftime("%I:%M %p").lstrip("0")
-                send_pushover_alert(
-                    f"Task '{task.task}' is due in 30 minutes on {formatted_date} at {formatted_time}.",
-                    "Upcoming Task"
-                )
-                task.notified_30min = True
-                db.session.commit()
+    with app.app_context():
+        now = datetime.now()
+        tasks = Task.query.all()
+        for task in tasks:
+            if not task.notified_30min:
+                task_dt = datetime.strptime(f"{task.date} {task.time}", "%Y-%m-%d %H:%M")
+                if task_dt - timedelta(minutes=30) <= now < task_dt:
+                    formatted_date = task_dt.strftime("%B %d, %Y")
+                    formatted_time = task_dt.strftime("%I:%M %p").lstrip("0")
+                    send_pushover_alert(
+                        f"Task '{task.task}' is due in 30 minutes on {formatted_date} at {formatted_time}.",
+                        "Upcoming Task"
+                    )
+                    task.notified_30min = True
+                    db.session.commit()
 
 
 scheduler = BackgroundScheduler()
