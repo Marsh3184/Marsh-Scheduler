@@ -48,7 +48,7 @@
             <div class="entry">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <span class="task-datetime toggle-entry" style="cursor: pointer;" onclick="toggleEntry({{ entry.id }})">
-                        {{ entry.timestamp.strftime('%B %d, %Y at %I:%M %p').lstrip("0") }}
+                        {{ entry.timestamp|localtime|strftime('%B %d, %Y at %I:%M %p') }}
                     </span>
                     <div class="dropdown">
                         <button class="dropdown-toggle">⋮</button>
