@@ -49,6 +49,16 @@ def format_time(value):
         return parsed_time.strftime("%I:%M %p").lstrip("0")
     except:
         return value
+    
+from zoneinfo import ZoneInfo
+
+@app.template_filter('localtime')
+def localtime(value):
+    try:
+        return value.replace(tzinfo=ZoneInfo("UTC")).astimezone(ZoneInfo("America/New_York"))
+    except:
+        return value
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
