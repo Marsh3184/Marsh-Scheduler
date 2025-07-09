@@ -32,6 +32,10 @@ def login_required(f):
 app = Flask(__name__)
 app.secret_key = 'fmub osfs jyxw onrf'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+    'pool_pre_ping': True
+}
+
 db = SQLAlchemy(app)
 
 @app.template_filter('format_date')
