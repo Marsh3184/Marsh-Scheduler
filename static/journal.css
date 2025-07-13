@@ -1,5 +1,5 @@
 body {
-    background-color: #e8f5e9; /* light green background */
+    background-color: #95c098; /* light green background */
     color: #2e7d32;
     font-family: 'Segoe UI', Arial, sans-serif;
     margin: 0;
@@ -26,21 +26,23 @@ body {
     font-family: 'Brush Script MT', cursive;
     font-size: 2.2em;
     font-weight: bold;
-    color: #2e7d32;
+    color: #000000;
     margin-bottom: 30px;
 }
 
 .button-group {
     display: flex;
     justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
+    gap: 15px;
+    flex-wrap: nowrap; /* force them to stay in one row */
 }
 
 .journal-btn {
     display: inline-block;
-    padding: 12px 25px;
-    font-size: 1em;
+    width: 140px; /* fixed width so they fit side by side */
+    padding: 12px 10px;
+    font-size: 0.95em;
+    text-align: center;
     border: none;
     text-decoration: none;
     border-radius: 6px;
