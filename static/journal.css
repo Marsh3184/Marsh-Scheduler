@@ -1,5 +1,5 @@
 body {
-    background-color: #95c098; /* light green background */
+    background-color: #afcf74; /* light green background */
     color: #2e7d32;
     font-family: 'Segoe UI', Arial, sans-serif;
     margin: 0;
@@ -18,8 +18,8 @@ body {
 }
 
 .journal-logo {
-    max-width: 120px;
-    margin-bottom: 20px;
+    max-width: 200px;
+    margin-bottom: 10px;
 }
 
 .welcome-text {
@@ -58,7 +58,7 @@ body {
 }
 
 .journal-btn.secondary {
-    background-color: #66bb6a;
+    background-color: #388e3c;
 }
 
 .journal-btn.secondary:hover {
