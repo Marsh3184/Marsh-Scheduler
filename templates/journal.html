@@ -10,7 +10,11 @@
 <div class="journal-container">
     <img src="{{ url_for('static', filename='logo_green.png') }}" alt="Marsh Logo" class="journal-logo">
 
-    <h1 class="welcome-text">Welcome to your Journal and Health Tracker</h1>
+    <h1 class="welcome-text">
+        Welcome to your <br>
+        Journal and <br>
+        Health Tracker
+    </h1>
 
     <div class="button-group">
         <a href="{{ url_for('new_journal_entry') }}" class="journal-btn">Add New Entry</a>
