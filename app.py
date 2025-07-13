@@ -179,6 +179,18 @@ def journal():
     entries = JournalEntry.query.order_by(JournalEntry.timestamp.desc()).all()
     return render_template('journal.html', entries=entries)
 
+@app.route('/journal/new')
+@login_required
+def new_journal_entry():
+    # placeholder for mood selector page
+    return "<h2>Mood Selector Coming Soon</h2>"
+
+@app.route('/journal/calendar')
+@login_required
+def view_journal_calendar():
+    # placeholder for calendar view page
+    return "<h2>Calendar View Coming Soon</h2>"
+
 @app.route('/edit_journal/<int:id>')
 def edit_journal(id):
     entry = JournalEntry.query.get_or_404(id)
