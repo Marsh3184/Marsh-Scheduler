@@ -137,4 +137,32 @@ body {
     align-items: center;
     justify-content: center;
 }
+.journal-paper {
+    width: 100%;
+    max-width: 600px;
+    min-height: 300px;
+    margin: 20px auto;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    font-family: 'Brush Script MT', cursive;
+    font-size: 1.2em;
+    line-height: 1.5;
+    color: #333;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+.selected-moods {
+    margin: 10px 0;
+}
+
+.mood-tag {
+    display: inline-block;
+    background-color: #c8e6c9;
+    color: #2e7d32;
+    border-radius: 12px;
+    padding: 5px 10px;
+    margin: 0 3px;
+    font-size: 0.9em;
+}
 
