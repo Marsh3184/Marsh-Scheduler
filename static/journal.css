@@ -103,7 +103,8 @@ body {
     font-size: 0.9em;
 }
 
-.mood-grid input[type="radio"]:checked + .mood-icon {
+.mood-grid input[type="checkbox"]:checked + .mood-icon {
     background-color: #81c784;
     font-weight: bold;
 }
+
