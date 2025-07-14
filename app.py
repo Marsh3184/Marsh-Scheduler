@@ -212,11 +212,13 @@ def journal_entry():
 def save_journal_entry():
     content = request.form.get('content')
     moods = request.form.getlist('moods')
-    entry = JournalEntry(content=content)
+    moods_str = ', '.join(moods)  # turn list into string
+    entry = JournalEntry(content=content, moods=moods_str)
     db.session.add(entry)
     db.session.commit()
     flash("Journal entry saved.")
     return redirect(url_for('journal'))
+
 
 
 
