@@ -32,10 +32,6 @@ def login_required(f):
 app = Flask(__name__)
 app.secret_key = 'fmub osfs jyxw onrf'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
-app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
-    'pool_pre_ping': True
-}
-
 db = SQLAlchemy(app)
 
 @app.template_filter('format_date')
@@ -182,8 +178,8 @@ def journal():
 @app.route('/journal/new')
 @login_required
 def new_journal_entry():
-    # placeholder for mood selector page
-    return "<h2>Mood Selector Coming Soon</h2>"
+    return render_template('mood_selector.html')
+
 
 @app.route('/journal/calendar')
 @login_required
@@ -209,7 +205,6 @@ def delete_journal(id):
 # Background scheduler: notify 30 minutes before
 def check_tasks():
     with app.app_context():
-        db.session.remove()  # Clear any stale connection
         now = datetime.now()
         tasks = Task.query.all()
         for task in tasks:
@@ -224,7 +219,6 @@ def check_tasks():
                     )
                     task.notified_30min = True
                     db.session.commit()
-
 
 
 scheduler = BackgroundScheduler()
