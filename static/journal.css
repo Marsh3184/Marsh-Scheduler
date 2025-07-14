@@ -199,30 +199,38 @@ body {
 .button-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px 15px; /* vertical & horizontal gap */
-    max-width: 350px; /* keeps it compact */
-    margin-left: 15px; /* shift to the left */
-    margin-top: 20px;
+    gap: 15px;
+    max-width: 400px;
+    margin: 20px 0 0 10px; /* top + shift left */
 }
 
 .journal-btn {
-    display: block;
+    display: inline-block;
+    text-align: center;
     width: 100%;
+    box-sizing: border-box;
     padding: 12px 10px;
     font-size: 1em;
-    text-align: center;
     border: none;
     text-decoration: none;
     border-radius: 6px;
     cursor: pointer;
-    transition: 0.3s ease;
     background-color: #4caf50;
     color: #fff;
     box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+    transition: background-color 0.3s ease;
 }
 
 .journal-btn:hover {
     background-color: #388e3c;
 }
+
+@media (max-width: 500px) {
+    .button-grid {
+        max-width: 300px;
+        margin-left: 5px;
+    }
+}
+
 
 
