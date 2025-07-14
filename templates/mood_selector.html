@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Select Your Mood</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='journal.css') }}">
+</head>
+<body>
+<div class="journal-container">
+    <h1 class="welcome-text">How are you feeling today?</h1>
+    <form method="POST" action="{{ url_for('journal_entry') }}">
+        <div class="mood-grid">
+            {% for mood in moods %}
+            <label>
+                <input type="radio" name="mood" value="{{ mood }}" required>
+                <div class="mood-icon">{{ mood }}</div>
+            </label>
+            {% endfor %}
+        </div>
+        <button type="submit" class="journal-btn">Continue to Journal</button>
+    </form>
+</div>
+</body>
+</html>
