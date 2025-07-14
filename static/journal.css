@@ -1,6 +1,6 @@
 body {
-    background-color: #d8ff8f; /* light green background */
-    color: #2e7d32;
+    background-color: #edf7e1; /* soft pastel green like your screenshot */
+    color: #000;
     font-family: 'Segoe UI', Arial, sans-serif;
     margin: 0;
     padding: 0;
@@ -10,36 +10,37 @@ body {
 .journal-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start; /* move up */
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     text-align: center;
-    padding: 20px;
+    padding: 40px 20px;
 }
 
 .journal-logo {
-    max-width: 200px;
-    margin-bottom: 5px;
+    max-width: 160px; /* bigger logo */
+    margin-bottom: 20px;
 }
 
 .welcome-text {
     font-family: 'Brush Script MT', cursive;
-    font-size: 2.2em;
-    font-weight: bold;
-    color: #000000;
+    font-size: 2.4em;
+    font-weight: 700; /* bolder */
+    color: #000; /* black */
     margin-bottom: 30px;
+    text-shadow: none; /* remove shadow if it was set */
 }
 
 .button-group {
     display: flex;
     justify-content: center;
     gap: 15px;
-    flex-wrap: nowrap; /* force them to stay in one row */
+    flex-wrap: nowrap;
 }
 
 .journal-btn {
     display: inline-block;
-    width: 140px; /* fixed width so they fit side by side */
+    width: 140px;
     padding: 12px 10px;
     font-size: 0.95em;
     text-align: center;
@@ -48,7 +49,7 @@ body {
     border-radius: 6px;
     cursor: pointer;
     transition: 0.3s ease;
-    background-color: #388e3c;
+    background-color: #4caf50; /* same color for both */
     color: #fff;
     box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
 }
@@ -57,10 +58,3 @@ body {
     background-color: #388e3c;
 }
 
-.journal-btn.secondary {
-    background-color: #388e3c;
-}
-
-.journal-btn.secondary:hover {
-    background-color: #43a047;
-}
