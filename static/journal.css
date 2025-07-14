@@ -139,11 +139,11 @@ body {
 }
 .journal-paper {
     width: 100%;
-    max-width: 78vw;   /* keep as you requested */
+    max-width: 78vw;
     min-height: 500px;
     margin: 20px auto;
-    background-color: #fff;
 
+    background-color: #fff;
     background-image: repeating-linear-gradient(
         to bottom,
         #f9f9f9 0px,
@@ -156,12 +156,13 @@ body {
     padding: 20px;
 
     font-family: 'Dancing Script', cursive;
-    font-size: 18px;
-    line-height: 30px;
-
+    font-size: 16px;         /* fixed size */
+    line-height: 30px;       /* exactly matches background */
     color: #333;
+
     box-shadow: 0 0 8px rgba(0,0,0,0.1);
 }
+
 
 
 
