@@ -137,21 +137,18 @@ body {
     align-items: center;
     justify-content: center;
 }
-.journal-paper * {
-    position: relative;
-    top: 2px;  /* adjust to taste: try 1px, 2px, 3px */
-} {
+ .journal-paper {
     width: 100%;
-    max-width: 78vw;
+    max-width: 78vw;   /* keep as you requested */
     min-height: 500px;
     margin: 20px auto;
-
     background-color: #fff;
+
     background-image: repeating-linear-gradient(
         to bottom,
         #f9f9f9 0px,
-        #f9f9f9 29px,
-        #e0e0e0 30px
+        #f9f9f9 25px,
+        #e0e0e0 27px
     );
     background-size: 100% 30px;
 
