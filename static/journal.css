@@ -24,12 +24,27 @@ body {
 
 .welcome-text {
     font-family: 'Brush Script MT', cursive;
-    font-size: 2.4em;
-    font-weight: 700; /* bolder */
-    color: #000; /* black */
+    font-size: 2.4em;  /* base size for small screens */
+    font-weight: 700;
+    color: #2e7d32;  /* logo green */
     margin-bottom: 30px;
-    text-shadow: none; /* remove shadow if it was set */
+    text-shadow: none;
 }
+
+/* medium screens (tablets & up) */
+@media (min-width: 600px) {
+    .welcome-text {
+        font-size: 2.8em;
+    }
+}
+
+/* large screens (desktops & up) */
+@media (min-width: 1024px) {
+    .welcome-text {
+        font-size: 3.2em;
+    }
+}
+
 
 .button-group {
     display: flex;
