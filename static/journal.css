@@ -107,14 +107,14 @@ body {
     display: block;
 }
 
-/* Mood grid */
 .mood-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 15px;
     margin: 20px auto 30px auto;
     max-width: 600px;
 }
+
 
 .mood-grid label {
     cursor: pointer;
