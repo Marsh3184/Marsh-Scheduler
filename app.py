@@ -180,6 +180,13 @@ def journal():
 def new_journal_entry():
     return render_template('mood_selector.html')
 
+@app.route('/journal/entry', methods=['POST'])
+@login_required
+def journal_entry():
+    selected_mood = request.form.get('mood')
+    return render_template('journal_entry.html', mood=selected_mood)
+    
+
 
 @app.route('/journal/calendar')
 @login_required
