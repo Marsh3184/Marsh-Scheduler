@@ -203,8 +203,9 @@ def new_journal_entry():
 @app.route('/journal/entry', methods=['POST'])
 @login_required
 def journal_entry():
-    selected_mood = request.form.get('mood')
-    return render_template('journal_entry.html', mood=selected_mood)
+    selected_moods = request.form.getlist('mood')
+    return render_template('journal_entry.html', moods=selected_moods)
+
 
 
 
