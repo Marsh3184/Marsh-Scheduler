@@ -198,14 +198,15 @@ body {
 }
 .button-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    max-width: 400px;
-    margin: 0 auto;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px 15px; /* vertical & horizontal gap */
+    max-width: 350px; /* keeps it compact */
+    margin-left: 15px; /* shift to the left */
+    margin-top: 20px;
 }
 
 .journal-btn {
-    display: inline-block;
+    display: block;
     width: 100%;
     padding: 12px 10px;
     font-size: 1em;
@@ -223,4 +224,5 @@ body {
 .journal-btn:hover {
     background-color: #388e3c;
 }
+
 
