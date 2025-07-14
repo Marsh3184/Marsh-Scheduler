@@ -10,21 +10,20 @@
 <div class="journal-container">
     <h1 class="welcome-text">How are you feeling today?</h1>
     <form method="POST" action="{{ url_for('journal_entry') }}">
-        <div class="mood-grid">
-            <div class="mood-grid">
-    {% for mood, emoji in moods.items() %}
-    <label>
-        <input type="radio" name="mood" value="{{ mood }}" required>
-        <div class="mood-icon">
-            <div class="mood-emoji">{{ emoji }}</div>
-            <div class="mood-text">{{ mood }}</div>
-        </div>
-    </label>
-    {% endfor %}
-</div>
+    <div class="mood-grid">
+        {% for mood, emoji in moods.items() %}
+        <label>
+            <input type="checkbox" name="mood" value="{{ mood }}">
+            <div class="mood-icon">
+                <div class="mood-emoji">{{ emoji }}</div>
+                <div class="mood-text">{{ mood }}</div>
+            </div>
+        </label>
+        {% endfor %}
+    </div>
+    <button type="submit" class="journal-btn">Continue to Journal</button>
+</form>
 
-        <button type="submit" class="journal-btn">Continue to Journal</button>
-    </form>
 </div>
 </body>
 </html>
