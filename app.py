@@ -1,12 +1,13 @@
 # --- Flask App: Marsh Scheduler with Journal and Pushover ---
 import os
-from flask import Flask, render_template, request, redirect, url_for, flash, session
-from flask_sqlalchemy import SQLAlchemy
+import time
+import requests
 from datetime import datetime, timedelta
 from functools import wraps
+from flask import Flask, render_template, request, redirect, url_for, flash, session, Response
+from flask_sqlalchemy import SQLAlchemy
 from apscheduler.schedulers.background import BackgroundScheduler
-import requests
-import time
+from zoneinfo import ZoneInfo
 
 # Pushover credentials
 PUSHOVER_USER_KEY = "u54nq29vztde5znk8nb38989x9xyhq"
@@ -34,6 +35,7 @@ app.secret_key = 'fmub osfs jyxw onrf'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 db = SQLAlchemy(app)
 
+# --- Filters ---
 @app.template_filter('format_date')
 def format_date(value):
     try:
@@ -49,8 +51,6 @@ def format_time(value):
         return parsed_time.strftime("%I:%M %p").lstrip("0")
     except:
         return value
-    
-from zoneinfo import ZoneInfo
 
 @app.template_filter('localtime')
 def localtime(value):
@@ -59,7 +59,27 @@ def localtime(value):
     except:
         return value
 
+@app.template_filter('strftime')
+def jinja2_strftime(value, format="%B %d, %Y at %I:%M %p"):
+    try:
+        return value.strftime(format)
+    except:
+        return value
 
+# --- Models ---
+class Task(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    task = db.Column(db.String(200), nullable=False)
+    date = db.Column(db.String(20), nullable=False)
+    time = db.Column(db.String(10), nullable=False)
+    notified_30min = db.Column(db.Boolean, default=False)
+
+class JournalEntry(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+# --- Routes ---
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -85,20 +105,6 @@ def index():
     tasks = Task.query.order_by(Task.date, Task.time).all()
     return render_template('index.html', tasks=tasks)
 
-# --- Models ---
-class Task(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    task = db.Column(db.String(200), nullable=False)
-    date = db.Column(db.String(20), nullable=False)
-    time = db.Column(db.String(10), nullable=False)
-    notified_30min = db.Column(db.Boolean, default=False)
-
-class JournalEntry(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.Text, nullable=False)
-    #moods = db.Column(db.String(200), nullable=True) 
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-
 @app.route('/add', methods=['POST'])
 def add():
     task_text = request.form['task']
@@ -108,23 +114,21 @@ def add():
     db.session.add(new_task)
     db.session.commit()
 
-  # Notify 30 seconds after creation
     def notify_30s():
         time.sleep(30)
         task_dt = datetime.strptime(f"{task_date} {task_time}", "%Y-%m-%d %H:%M")
         formatted_date = task_dt.strftime("%B %d, %Y")
         formatted_time = task_dt.strftime("%I:%M %p").lstrip("0")
         send_pushover_alert(
-        f"Task '{task_text}' was just scheduled for {formatted_date} at {formatted_time}.",
-        "Task Created"
-    )
+            f"Task '{task_text}' was just scheduled for {formatted_date} at {formatted_time}.",
+            "Task Created"
+        )
 
     from threading import Thread
     Thread(target=notify_30s).start()
 
     flash("Task added successfully.")
     return redirect(url_for('index'))
-
 
 @app.route('/edit_task/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -148,13 +152,9 @@ def delete_task(id):
     flash('Task deleted successfully.')
     return redirect(url_for('index'))
 
-@app.template_filter('strftime')
-def jinja2_strftime(value, format="%B %d, %Y at %I:%M %p"):
-    try:
-        return value.strftime(format)
-    except:
-        return value
-
+@app.route('/food-entry')
+def food_entry():
+    return render_template('food_entry.html')
 
 @app.route('/journal', methods=['GET', 'POST'])
 @login_required
@@ -176,41 +176,16 @@ def journal():
     entries = JournalEntry.query.order_by(JournalEntry.timestamp.desc()).all()
     return render_template('journal.html', entries=entries)
 
-@app.route('/scheduler')
-def scheduler():
-    # your view logic
-    return render_template('scheduler.html')
-
-@app.route('/food-entry')
-def food_entry():
-    # your view logic
-    return render_template('food_entry.html')
-
-
 @app.route('/journal/new')
 @login_required
 def new_journal_entry():
     moods = {
-        "Happy": "😊",
-        "Sad": "😢",
-        "Angry": "😠",
-        "Sick": "🤒",
-        "Depressed": "😞",
-        "Calm": "😌",
-        "Anxious": "😰",
-        "Energetic": "😃",
-        "Creative": "🎨",
-        "Lonely": "🥺",
-        "Frustrated": "😤",
-        "Lost": "😕",
-        "Tired": "😴",
-        "Gassy": "💨",
-        "Hungry": "🍔"
+        "Happy": "😊", "Sad": "😢", "Angry": "😠", "Sick": "🤒", "Depressed": "😞",
+        "Calm": "😌", "Anxious": "😰", "Energetic": "😃", "Creative": "🎨",
+        "Lonely": "🥺", "Frustrated": "😤", "Lost": "😕", "Tired": "😴",
+        "Gassy": "💨", "Hungry": "🍔"
     }
     return render_template('mood_selector.html', moods=moods)
-
-
-
 
 @app.route('/journal/entry', methods=['POST'])
 @login_required
@@ -223,14 +198,12 @@ def journal_entry():
 def save_journal_entry():
     content = request.form.get('content')
     moods = request.form.getlist('moods')
-    moods_str = ', '.join(moods)  # turn list into string
+    moods_str = ', '.join(moods)
     entry = JournalEntry(content=content, moods=moods_str)
     db.session.add(entry)
     db.session.commit()
     flash("Journal entry saved.")
     return redirect(url_for('journal'))
-
-from flask import Response
 
 @app.route('/backup_journals')
 @login_required
@@ -241,21 +214,18 @@ def backup_journals():
         timestamp = e.timestamp.strftime("%Y-%m-%d %I:%M %p")
         moods = e.moods if e.moods else "(no moods)"
         lines.append(f"{timestamp} | Moods: {moods}\n{e.content}\n{'-'*40}\n")
-    
+
     backup_text = "\n".join(lines)
-    
+
     return Response(
         backup_text,
         mimetype='text/plain',
         headers={"Content-Disposition": "attachment;filename=journal_backup.txt"}
     )
 
-
-
 @app.route('/journal/calendar')
 @login_required
 def view_journal_calendar():
-    # placeholder for calendar view page
     return "<h2>Calendar View Coming Soon</h2>"
 
 @app.route('/edit_journal/<int:id>')
@@ -273,7 +243,7 @@ def delete_journal(id):
     flash("Journal entry deleted.")
     return redirect(url_for('journal'))
 
-# Background scheduler: notify 30 minutes before
+# --- Background Scheduler ---
 def check_tasks():
     with app.app_context():
         now = datetime.now()
@@ -291,7 +261,6 @@ def check_tasks():
                     task.notified_30min = True
                     db.session.commit()
 
-
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=check_tasks, trigger="interval", seconds=60)
 scheduler.start()
@@ -302,3 +271,4 @@ with app.app_context():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
