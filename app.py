@@ -96,7 +96,7 @@ class Task(db.Model):
 class JournalEntry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text, nullable=False)
-   # moods = db.Column(db.String(200), nullable=True) 
+    #moods = db.Column(db.String(200), nullable=True) 
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
 @app.route('/add', methods=['POST'])
@@ -207,27 +207,6 @@ def journal_entry():
     selected_moods = request.form.getlist('mood')
     return render_template('journal_entry.html', moods=selected_moods)
 
-from flask import Response
-
-@app.route('/backup_journals')
-@login_required
-def backup_journals():
-    entries = JournalEntry.query.order_by(JournalEntry.timestamp).all()
-    lines = []
-    for e in entries:
-        #moods = e.moods if e.moods else "(no moods)"
-        timestamp = e.timestamp.strftime("%Y-%m-%d %I:%M %p")
-        lines.append(f"{timestamp}\n{e.content}\n{'-'*40}\n")
-    
-    backup_text = "\n".join(lines)
-    
-    return Response(
-        backup_text,
-        mimetype='text/plain',
-        headers={"Content-Disposition": "attachment;filename=journal_backup.txt"}
-    )
-
-
 @app.route('/journal/save', methods=['POST'])
 @login_required
 def save_journal_entry():
@@ -240,6 +219,25 @@ def save_journal_entry():
     flash("Journal entry saved.")
     return redirect(url_for('journal'))
 
+from flask import Response
+
+@app.route('/backup_journals')
+@login_required
+def backup_journals():
+    entries = JournalEntry.query.order_by(JournalEntry.timestamp).all()
+    lines = []
+    for e in entries:
+        timestamp = e.timestamp.strftime("%Y-%m-%d %I:%M %p")
+        moods = e.moods if e.moods else "(no moods)"
+        lines.append(f"{timestamp} | Moods: {moods}\n{e.content}\n{'-'*40}\n")
+    
+    backup_text = "\n".join(lines)
+    
+    return Response(
+        backup_text,
+        mimetype='text/plain',
+        headers={"Content-Disposition": "attachment;filename=journal_backup.txt"}
+    )
 
 
 
@@ -288,7 +286,7 @@ scheduler.add_job(func=check_tasks, trigger="interval", seconds=60)
 scheduler.start()
 
 with app.app_context():
-    # db.drop_all()
+    db.drop_all()
     db.create_all()
 
 if __name__ == '__main__':
