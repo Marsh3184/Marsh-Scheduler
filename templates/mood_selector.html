@@ -9,20 +9,27 @@
 <body>
 <div class="journal-container">
     <h1 class="welcome-text">How are you feeling today?</h1>
+    
     <form method="POST" action="{{ url_for('journal_entry') }}">
-    <div class="mood-grid">
-        {% for mood, emoji in moods.items() %}
-        <label>
-            <input type="checkbox" name="mood" value="{{ mood }}">
-            <div class="mood-icon">
-                <div class="mood-emoji">{{ emoji }}</div>
-                <div class="mood-text">{{ mood }}</div>
-            </div>
-        </label>
-        {% endfor %}
+        <div class="mood-grid">
+            {% for mood, emoji in moods.items() %}
+            <label>
+                <input type="checkbox" name="mood" value="{{ mood }}">
+                <div class="mood-icon">
+                    <div class="mood-emoji">{{ emoji }}</div>
+                    <div class="mood-text">{{ mood }}</div>
+                </div>
+            </label>
+            {% endfor %}
+        </div>
+
+        <button type="submit" class="journal-btn">Continue to Journal</button>
+    </form>
+
+    <!-- Add Main button below the form -->
+    <div class="button-group" style="margin-top: 20px;">
+        <a href="{{ url_for('welcome') }}" class="journal-btn">Main</a>
     </div>
-    <button type="submit" class="journal-btn">Continue to Journal</button>
-</form>
 
 </div>
 </body>
