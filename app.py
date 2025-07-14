@@ -215,7 +215,7 @@ def backup_journals():
     entries = JournalEntry.query.order_by(JournalEntry.timestamp).all()
     lines = []
     for e in entries:
-        moods = e.moods if e.moods else "(no moods)"
+        #moods = e.moods if e.moods else "(no moods)"
         timestamp = e.timestamp.strftime("%Y-%m-%d %I:%M %p")
         lines.append(f"{timestamp} | Moods: {moods}\n{e.content}\n{'-'*40}\n")
     
