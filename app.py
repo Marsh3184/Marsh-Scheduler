@@ -217,7 +217,7 @@ def backup_journals():
     for e in entries:
         #moods = e.moods if e.moods else "(no moods)"
         timestamp = e.timestamp.strftime("%Y-%m-%d %I:%M %p")
-        lines.append(f"{timestamp} | Moods: {moods}\n{e.content}\n{'-'*40}\n")
+        lines.append(f"{timestamp}\n{e.content}\n{'-'*40}\n")
     
     backup_text = "\n".join(lines)
     
