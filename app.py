@@ -178,11 +178,23 @@ def journal():
 @app.route('/journal/new')
 @login_required
 def new_journal_entry():
-    moods = [
-       "Happy", "Sad", "Angry", "Depressed", "Calm", "Anxious",
-        "Energetic", "Loved", "Creative", "Lonely", "Frustrated", "Lost", "Tired"
-    ]
+    moods = {
+        "Happy": "😊",
+        "Sad": "😢",
+        "Angry": "😠",
+        "Depressed": "😞",
+        "Calm": "😌",
+        "Anxious": "😰",
+        "Energetic": "😃",
+        "Loved": "❤️",
+        "Creative": "🎨",
+        "Lonely": "🥺",
+        "Frustrated": "😤",
+        "Lost": "😕",
+        "Tired": "😴"
+    }
     return render_template('mood_selector.html', moods=moods)
+
 
 
 @app.route('/journal/entry', methods=['POST'])
