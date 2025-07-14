@@ -81,9 +81,9 @@ body {
 /* Writing Pad */
 .journal-paper {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1000px;   /* was 900px */
     min-height: 500px;
-    margin: 20px auto;
+    margin: 20px auto 20px 40px; /* more left */
     background-color: #fff;
 
     background-image: repeating-linear-gradient(
@@ -106,6 +106,7 @@ body {
 
     display: block;
 }
+
 
 .mood-grid {
     display: grid;
