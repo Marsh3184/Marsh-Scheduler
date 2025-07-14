@@ -176,6 +176,17 @@ def journal():
     entries = JournalEntry.query.order_by(JournalEntry.timestamp.desc()).all()
     return render_template('journal.html', entries=entries)
 
+@app.route('/scheduler')
+def scheduler():
+    # your view logic
+    return render_template('scheduler.html')
+
+@app.route('/food-entry')
+def food_entry():
+    # your view logic
+    return render_template('food_entry.html')
+
+
 @app.route('/journal/new')
 @login_required
 def new_journal_entry():
