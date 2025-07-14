@@ -147,7 +147,7 @@ body {
     background-image: repeating-linear-gradient(
         to bottom,
         #f9f9f9 0px,
-        #f9f9f9 25px,
+        #f9f9f9 20px,
         #e0e0e0 27px
     );
     background-size: 100% 30px;
