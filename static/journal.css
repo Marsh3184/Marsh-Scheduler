@@ -139,14 +139,14 @@ body {
 }
 .journal-paper {
     width: 100%;
-    max-width: 95vw;   /* NEW: shrink width on small screens */
+    max-width: 80vw;   /* NEW: shrink width on small screens */
     min-height: 500px;
     margin: 20px auto;
     background-color: #fff;
     background-image: repeating-linear-gradient(
         to bottom,
         #f9f9f9 0px,
-        #f9f9f9 29px,
+        #f9f9f9 2px,
         #e0e0e0 30px
     );
     background-size: 100% 30px;
