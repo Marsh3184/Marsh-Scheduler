@@ -125,4 +125,16 @@ body {
     margin-left: auto;
     margin-right: auto;
 }
+.mood-icon {
+    background-color: #c8e6c9;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 
