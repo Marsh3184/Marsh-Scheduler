@@ -8,10 +8,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
 </head>
 <body>
-<div class="button-group">
-    <a href="{{ url_for('index') }}" class="journal-btn">Scheduler</a>
-
-</div>
 
 <div class="journal-container">
 
@@ -32,9 +28,14 @@
         {% for mood in moods %}
             <input type="hidden" name="moods" value="{{ mood }}">
         {% endfor %}
-        <button type="submit" class="journal-btn">Save Entry</button>
+
+        <div class="button-grid">
+            <button type="submit" class="journal-btn">Save Entry</button>
+            <a href="{{ url_for('index') }}" class="journal-btn">Scheduler</a>
+        </div>
     </form>
 
 </div>
 </body>
 </html>
+
