@@ -207,6 +207,27 @@ def journal_entry():
     selected_moods = request.form.getlist('mood')
     return render_template('journal_entry.html', moods=selected_moods)
 
+from flask import Response
+
+@app.route('/backup_journals')
+@login_required
+def backup_journals():
+    entries = JournalEntry.query.order_by(JournalEntry.timestamp).all()
+    lines = []
+    for e in entries:
+        moods = e.moods if e.moods else "(no moods)"
+        timestamp = e.timestamp.strftime("%Y-%m-%d %I:%M %p")
+        lines.append(f"{timestamp} | Moods: {moods}\n{e.content}\n{'-'*40}\n")
+    
+    backup_text = "\n".join(lines)
+    
+    return Response(
+        backup_text,
+        mimetype='text/plain',
+        headers={"Content-Disposition": "attachment;filename=journal_backup.txt"}
+    )
+
+
 @app.route('/journal/save', methods=['POST'])
 @login_required
 def save_journal_entry():
