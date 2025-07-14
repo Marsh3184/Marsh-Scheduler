@@ -182,18 +182,21 @@ def new_journal_entry():
         "Happy": "😊",
         "Sad": "😢",
         "Angry": "😠",
+        "Sick": "🤒",
         "Depressed": "😞",
         "Calm": "😌",
         "Anxious": "😰",
         "Energetic": "😃",
-        "Loved": "❤️",
         "Creative": "🎨",
         "Lonely": "🥺",
         "Frustrated": "😤",
         "Lost": "😕",
-        "Tired": "😴"
+        "Tired": "😴",
+        "Gassy": "💨",
+        "Hungry": "🍔"
     }
     return render_template('mood_selector.html', moods=moods)
+
 
 
 
