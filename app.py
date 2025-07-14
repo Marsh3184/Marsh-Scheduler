@@ -179,8 +179,8 @@ def journal():
 @login_required
 def new_journal_entry():
     moods = [
-        "Excited", "Happy", "Sad", "Disappointed", "Calm", "Anxious", "Jealous",
-        "Energetic", "Loved", "Creative", "Alone", "Cranky", "Frustrated", "Lost", "Tired", "Grateful"
+       "Happy", "Sad", "Angry", "Depressed", "Calm", "Anxious",
+        "Energetic", "Loved", "Creative", "Lonely", "Frustrated", "Lost", "Tired"
     ]
     return render_template('mood_selector.html', moods=moods)
 
@@ -190,7 +190,7 @@ def new_journal_entry():
 def journal_entry():
     selected_mood = request.form.get('mood')
     return render_template('journal_entry.html', mood=selected_mood)
-    
+
 
 
 @app.route('/journal/calendar')
