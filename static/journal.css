@@ -139,18 +139,19 @@ body {
 }
 .journal-paper {
     width: 100%;
-    max-width: 600px;
-    min-height: 300px;
+    max-width: 800px;
+    min-height: 500px;
     margin: 20px auto;
     background-color: #fff;
     border: 1px solid #ccc;
     padding: 20px;
-    font-family: 'Brush Script MT', cursive;
-    font-size: 1.2em;
-    line-height: 1.5;
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.5em;
+    line-height: 1.8;
     color: #333;
-    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
 }
+
 
 .selected-moods {
     margin: 10px 0;
