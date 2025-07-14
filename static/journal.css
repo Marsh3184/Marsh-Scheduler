@@ -139,29 +139,30 @@ body {
 }
 .journal-paper {
     width: 100%;
-    max-width: 78vw;   /* keep as you requested */
+    max-width: 78vw;
     min-height: 500px;
     margin: 20px auto;
-    background-color: #fff;
 
+    background-color: #fff;
     background-image: repeating-linear-gradient(
         to bottom,
         #f9f9f9 0px,
-        #f9f9f9 33px,
-        #e0e0e0 34px
+        #f9f9f9 29px,
+        #e0e0e0 30px
     );
-    background-size: 100% 34px;
+    background-size: 100% 30px;
 
     border: 1px solid #ccc;
     padding: 20px;
 
     font-family: 'Dancing Script', cursive;
     font-size: 25px;
-    line-height: 34px;
+    line-height: 30px;
 
     color: #333;
     box-shadow: 0 0 8px rgba(0,0,0,0.1);
 }
+
 
 
 
