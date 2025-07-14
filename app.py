@@ -96,7 +96,7 @@ class Task(db.Model):
 class JournalEntry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text, nullable=False)
-    moods = db.Column(db.String(200), nullable=True) 
+   # moods = db.Column(db.String(200), nullable=True) 
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
 @app.route('/add', methods=['POST'])
