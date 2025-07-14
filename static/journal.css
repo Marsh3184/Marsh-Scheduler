@@ -81,7 +81,7 @@ body {
 /* Writing Pad */
 .journal-paper {
     width: 100%;
-    max-width: 1000px;
+    max-width: 900px;
     min-height: 500px;
     margin: 20px auto;
     background-color: #fff;
@@ -103,8 +103,6 @@ body {
 
     color: #333;
     box-shadow: 0 0 8px rgba(0,0,0,0.1);
-
-    display: block;
 }
 
 
