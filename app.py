@@ -206,6 +206,16 @@ def journal_entry():
     selected_moods = request.form.getlist('mood')
     return render_template('journal_entry.html', moods=selected_moods)
 
+@app.route('/journal/save', methods=['POST'])
+@login_required
+def save_journal_entry():
+    content = request.form.get('content')
+    moods = request.form.getlist('moods')
+    entry = JournalEntry(content=content)
+    db.session.add(entry)
+    db.session.commit()
+    flash("Journal entry saved.")
+    return redirect(url_for('journal'))
 
 
 
