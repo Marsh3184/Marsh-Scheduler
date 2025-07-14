@@ -107,4 +107,13 @@ body {
     background-color: #81c784;
     font-weight: bold;
 }
+.mood-grid input[type="checkbox"] {
+    display: none;
+}
+
+.mood-grid input[type="checkbox"]:checked + .mood-icon {
+    background-color: #81c784;
+    font-weight: bold;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
 
